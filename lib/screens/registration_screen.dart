@@ -1,7 +1,8 @@
-import 'package:flash_chat/utilities/builders.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../components/constants.dart';
+import '../components/rounded_button_builder.dart';
+import '../components/text_field_builder.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const id = 'registration_screen';

@@ -1,6 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flash_chat/constants.dart';
+import 'package:flash_chat/components/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../components/text_field_builder.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -46,13 +48,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-                    child: TextField(
-                      onChanged: (value) {
-                        //Do something with the user input.
-                      },
-                      decoration: kMessageTextFieldDecoration,
-                    ),
-                  ),
+                      child: TextFieldBuilder(
+                    hintText: '',
+                    onChanged: (value) {},
+                    decoration: kMessageTextFieldDecoration,
+                  )),
                   FilledButton(
                     onPressed: () {
                       //Implement send functionality.
@@ -71,3 +71,11 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
+
+// TextField(
+// onChanged: (value) {
+// //Do something with the user input.
+// },
+// decoration: kMessageTextFieldDecoration,
+// ),
+// )

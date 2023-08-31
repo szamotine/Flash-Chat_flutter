@@ -1,9 +1,9 @@
+import 'package:flash_chat/components/rounded_button_builder.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
-import 'package:flash_chat/utilities/builders.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../components/constants.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
