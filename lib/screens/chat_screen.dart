@@ -1,9 +1,11 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
   static const id = 'chat_screen';
+  static const String kChatText = '⚡️Chat';
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -22,7 +24,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 //Implement logout functionality
               }),
         ],
-        title: const Text('⚡️Chat'),
+        title: AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText(
+              ChatScreen.kChatText,
+              textStyle: const TextStyle(),
+              speed: const Duration(milliseconds: 100),
+            )
+          ],
+        ),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
