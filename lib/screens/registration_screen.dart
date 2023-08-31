@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static const id = 'registration_screen';
 
@@ -19,9 +21,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              height: 200.0,
-              child: Image.asset('images/logo.png'),
+            Hero(
+              tag: kHeroTagLogo,
+              child: SizedBox(
+                height: 200.0,
+                child: Image.asset(kImagesLogoPath),
+              ),
             ),
             const SizedBox(
               height: 48.0,

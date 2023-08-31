@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
 //#region String Constants
-
+const kHeroTagLogo = 'logo';
+const kImagesLogoPath = 'images/logo.png';
 //#endregion
+
+const kWelcomePageTextStyle = TextStyle(
+  fontSize: 45.0,
+  fontWeight: FontWeight.w900,
+  color: Colors.black,
+);
 
 const kSendButtonTextStyle = TextStyle(
   color: Colors.lightBlueAccent,
