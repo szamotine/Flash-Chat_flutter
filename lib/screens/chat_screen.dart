@@ -1,5 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/components/constants.dart';
+import 'package:flash_chat/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../components/text_field_builder.dart';
@@ -14,6 +16,26 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _auth = FirebaseAuth.instance;
+  late User loggedInUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print('Error in ChatScreen.getCurrentUser(): $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +45,8 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
+                _auth.signOut();
+                Navigator.pushReplacementNamed(context, WelcomeScreen.id);
                 //Implement logout functionality
               }),
         ],
@@ -30,6 +54,11 @@ class _ChatScreenState extends State<ChatScreen> {
           animatedTexts: [
             TypewriterAnimatedText(
               ChatScreen.kChatText,
+              textStyle: const TextStyle(),
+              speed: const Duration(milliseconds: 100),
+            ),
+            TypewriterAnimatedText(
+              loggedInUser.email ?? 'User not found',
               textStyle: const TextStyle(),
               speed: const Duration(milliseconds: 100),
             )

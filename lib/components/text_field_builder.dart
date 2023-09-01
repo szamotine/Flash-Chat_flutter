@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
+
 class TextFieldBuilder extends StatelessWidget {
-  const TextFieldBuilder({super.key, required this.hintText, required this.onChanged, this.decoration});
+  const TextFieldBuilder(
+      {super.key,
+      required this.hintText,
+      required this.onChanged,
+      this.decoration,
+      this.obscureText = false,
+      this.textInputType = TextInputType.text});
 
   final String hintText;
   final Function(String value) onChanged;
   final InputDecoration? decoration;
+  final bool obscureText;
+  final TextInputType textInputType;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: textInputType,
+      textAlign: TextAlign.center,
+      style: kTextFieldInputTextStyle,
       onChanged: onChanged,
+      obscureText: obscureText,
       decoration: decoration ??
           InputDecoration(
             hintStyle: const TextStyle(color: Colors.grey),

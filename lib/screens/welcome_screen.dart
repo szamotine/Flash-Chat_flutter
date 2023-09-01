@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flash_chat/components/rounded_button_builder.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
@@ -23,9 +24,23 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
   late AnimationController controller2;
   late Animation animation2;
 
+  Future<void> initialiseFirebase() async {
+    try {
+      final app = await Firebase.initializeApp();
+
+      if (app != null) {
+        print('${app.name} initialized');
+      }
+    } catch (e) {
+      print('Error in Firebase initialize: $e');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    initialiseFirebase();
+
     //#region Curved Animation
     controller = AnimationController(
       vsync: this,
