@@ -29,6 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _firestore = FirebaseFirestore.instance;
   late Stream<QuerySnapshot<Object?>>? stream = _firestore.collection(collectionPath).snapshots();
   final TextEditingController textEditingController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -43,22 +44,13 @@ class _ChatScreenState extends State<ChatScreen> {
         loggedInUser = user;
       }
     } catch (e) {
-      print('Error in ChatScreen.getCurrentUser(): $e');
+      //print('Error in ChatScreen.getCurrentUser(): $e');
     }
   }
 
-  Future<void> getMessages() async {
-    final messages = await _firestore.collection(collectionPath).get();
-    for (var message in messages.docs) {
-      print(message.data());
-    }
-  }
-
-  Future<void> messagesStream() async {
-    await for (var snapshot in stream!) {
-      for (var message in snapshot.docs) {
-        print(message.data());
-      }
+  void scrollToBottom() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(scrollController.position.maxScrollExtent, duration: const Duration(seconds: 1), curve: Curves.decelerate);
     }
   }
 
@@ -119,16 +111,26 @@ class _ChatScreenState extends State<ChatScreen> {
                   messageList.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
 
                   for (var m in messageList) {
-                    final messageWidget = Text('${m.messageTimeStamp} \t ${m.sender}: \t\t${m.message}');
+                    final messageWidget = Text(
+                      '${m.messageTimeStamp} \t ${m.sender}:',
+                      style: const TextStyle(color: Colors.green),
+                    );
+                    final messageWidget2 = Text('${m.message}\n');
                     messageWidgets.add(messageWidget);
+                    messageWidgets.add(messageWidget2);
                   }
                 }
 
+                scrollToBottom();
+
                 return Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: messageWidgets,
+                  flex: 8,
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: messageWidgets,
+                    ),
                   ),
                 );
               },
@@ -165,10 +167,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     // FilledButton(
-                    //   onPressed: () {
-                    //     messagesStream();
-                    //   },
-                    //   child: Text('Get messages'),
+                    //   onPressed: () {},
+                    //   child: Text('scroll'),
                     // )
                   ],
                 ),
