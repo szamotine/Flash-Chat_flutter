@@ -28,6 +28,14 @@ const kSendButtonTextStyle = TextStyle(
   fontSize: 18.0,
 );
 
+const kTextFieldInputTextStyle = TextStyle(
+  color: Colors.black,
+);
+
+const kTextFieldChatInputTextStyle = TextStyle(
+  color: Colors.white,
+);
+
 const kMessageTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   hintText: 'Type your message here...',
@@ -38,12 +46,4 @@ const kMessageContainerDecoration = BoxDecoration(
   border: Border(
     top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
   ),
-);
-
-const kTextFieldInputTextStyle = TextStyle(
-  color: Colors.black,
-);
-
-const kTextFieldChatInputTextStyle = TextStyle(
-  color: Colors.white,
 );
