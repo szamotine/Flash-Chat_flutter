@@ -9,20 +9,25 @@ class TextFieldBuilder extends StatelessWidget {
       required this.onChanged,
       this.decoration,
       this.obscureText = false,
-      this.textInputType = TextInputType.text});
+      this.textInputType = TextInputType.text,
+      this.textStyle = kTextFieldInputTextStyle,
+      required this.textEditingController});
 
   final String hintText;
   final Function(String value) onChanged;
   final InputDecoration? decoration;
   final bool obscureText;
   final TextInputType textInputType;
+  final TextStyle textStyle;
+  final TextEditingController textEditingController;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: textEditingController,
       keyboardType: textInputType,
-      textAlign: TextAlign.center,
-      style: kTextFieldInputTextStyle,
+      textAlign: TextAlign.left,
+      style: textStyle,
       onChanged: onChanged,
       obscureText: obscureText,
       decoration: decoration ??

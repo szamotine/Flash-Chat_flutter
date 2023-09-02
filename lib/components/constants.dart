@@ -3,7 +3,18 @@ import 'package:flutter/material.dart';
 //#region String Constants
 const kHeroTagLogo = 'logo';
 const kImagesLogoPath = 'images/logo.png';
+const String kLoginSuccessful = 'Login Successful';
+const String kLoginUnsuccessful = 'Login unsuccessful, try again';
+
+const String kRegistrationSuccessful = 'Registration Successful';
+const String kRegistrationUnsuccessful = 'Registration unsuccessful, try again';
 //#endregion
+
+const kDrawerListTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 20,
+  fontWeight: FontWeight.bold,
+);
 
 const kWelcomePageTextStyle = TextStyle(
   fontSize: 45.0,
@@ -12,7 +23,7 @@ const kWelcomePageTextStyle = TextStyle(
 );
 
 const kSendButtonTextStyle = TextStyle(
-  color: Colors.lightBlueAccent,
+  color: Colors.white,
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
 );
@@ -31,4 +42,8 @@ const kMessageContainerDecoration = BoxDecoration(
 
 const kTextFieldInputTextStyle = TextStyle(
   color: Colors.black,
+);
+
+const kTextFieldChatInputTextStyle = TextStyle(
+  color: Colors.white,
 );
