@@ -8,6 +8,8 @@ import 'package:flash_chat/components/message_stream_builder.dart';
 import 'package:flash_chat/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../components/alert_dialogue.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
   static const id = 'chat_screen';
@@ -32,10 +34,20 @@ class _ChatScreenState extends State<ChatScreen> {
 
   late DateChip previousDate = DateChip(date: DateTime(2005));
 
+  //TODO: Implement Firebase Messaging
+  // String messageTitle = "Empty";
+  // String notificationAlert = "alert";
+  //FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+
+    if (scrollController.hasClients) {
+      scrollController.animateTo(scrollController.position.maxScrollExtent + 100,
+          duration: const Duration(seconds: 1), curve: Curves.decelerate);
+    }
   }
 
   void getCurrentUser() {
@@ -49,6 +61,14 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void showLoginDialogue(String message) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return LoginAlertBox(successMessage: message);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     getCurrentUser();
@@ -60,6 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: const Icon(Icons.close),
               onPressed: () {
                 _auth.signOut();
+                showLoginDialogue(kLogOutSuccessful);
                 Navigator.pushReplacementNamed(context, WelcomeScreen.id);
                 //Implement logout functionality
               }),

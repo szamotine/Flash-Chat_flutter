@@ -46,9 +46,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         showLoginDialogue('$kRegistrationSuccessful : $userEmail');
       } else if (email.isEmpty) {
-        showLoginDialogue('Please enter an email address');
+        showLoginDialogue(kEmailEmptyDialogue);
       } else if (password.isEmpty) {
-        showLoginDialogue('Please enter a password');
+        showLoginDialogue(kPasswordEmptyDialogue);
       }
     } on FirebaseAuthException catch (e) {
       showLoginDialogue('$kRegistrationUnsuccessful: \n Error: ${e.code} \n ${e.message}');

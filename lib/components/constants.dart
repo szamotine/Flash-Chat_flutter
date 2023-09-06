@@ -5,9 +5,13 @@ const kHeroTagLogo = 'logo';
 const kImagesLogoPath = 'images/logo.png';
 const String kLoginSuccessful = 'Login Successful';
 const String kLoginUnsuccessful = 'Login unsuccessful, try again';
+const String kLogOutSuccessful = 'Logged out successfully';
 
 const String kRegistrationSuccessful = 'Registration Successful';
 const String kRegistrationUnsuccessful = 'Registration unsuccessful, try again';
+
+const String kEmailEmptyDialogue = 'Please enter an email address';
+const String kPasswordEmptyDialogue = 'Please enter a password';
 
 const String filler = '\n\n\n------------\n\n\n';
 //#endregion

@@ -59,6 +59,8 @@ class MessageStreamBuilder extends StatelessWidget {
               messageList.add(m);
             }
             messageList.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
+
+            messageList = messageList.reversed.toList();
             // print('$filler Message List completed with ${messageList.length} entries $filler');
 
             for (var m in messageList) {
@@ -82,9 +84,11 @@ class MessageStreamBuilder extends StatelessWidget {
           );
         }
 
+        scrollToBottom();
         return Expanded(
           flex: 6,
           child: ListView(
+            reverse: true,
             padding: const EdgeInsets.all(5),
             children: customBubbleList,
             controller: scrollController,

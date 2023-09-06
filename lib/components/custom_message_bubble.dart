@@ -19,7 +19,11 @@ class CustomMessageBubble extends StatelessWidget {
         crossAxisAlignment: isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Material(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.only(
+                topLeft: isSender ? const Radius.circular(30) : Radius.zero,
+                bottomLeft: const Radius.circular(30),
+                bottomRight: const Radius.circular(30),
+                topRight: isSender ? Radius.zero : const Radius.circular(30)),
             elevation: 5.0,
             color: isSender ? Colors.lightBlueAccent : Colors.green,
             child: Padding(
@@ -35,7 +39,9 @@ class CustomMessageBubble extends StatelessWidget {
             style: kChatMessageDataTextStyle.copyWith(color: isSender ? Colors.lightBlueAccent : Colors.green),
           ),
           Text(
-            DateFormat('yyyy-MM-dd kk:mm').format(timeStamp),
+            DateFormat(
+              'yyyy-MM-dd HH:mm',
+            ).format(timeStamp),
             style: kChatMessageDataTextStyle,
           ),
         ],

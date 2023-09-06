@@ -42,9 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
         showLoginDialogue('$kLoginSuccessful : $userEmail');
       } else if (email.isEmpty) {
-        showLoginDialogue('Please enter an email address');
+        showLoginDialogue(kEmailEmptyDialogue);
       } else if (password.isEmpty) {
-        showLoginDialogue('Please enter a password');
+        showLoginDialogue(kPasswordEmptyDialogue);
       }
     } on FirebaseAuthException catch (e) {
       showLoginDialogue('$kLoginUnsuccessful: \n Error: ${e.code} \n ${e.message}');
@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextFieldBuilder(
                 textEditingController: textEditingController2,
-                hintText: 'Enter your password.',
+                hintText: 'Enter your password',
                 obscureText: true,
                 onChanged: (value) {
                   password = value;
@@ -107,8 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               RoundedButtonBuilder(
                   title: 'Log In',
-                  onPressed: () {
-                    validateLogin();
+                  onPressed: () async {
+                    await validateLogin();
+
                     Navigator.pushNamed(context, ChatScreen.id);
                   },
                   color: Colors.lightBlueAccent),

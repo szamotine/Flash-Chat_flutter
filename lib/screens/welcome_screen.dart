@@ -28,9 +28,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
     try {
       final app = await Firebase.initializeApp();
 
-      if (app != null) {
-        print('${app.name} initialized');
-      }
+      print('${app.name} initialized');
     } catch (e) {
       print('Error in Firebase initialize: $e');
     }
