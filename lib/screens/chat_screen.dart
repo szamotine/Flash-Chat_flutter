@@ -4,11 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/components/constants.dart';
 import 'package:flash_chat/components/custom_message_bar.dart';
+import 'package:flash_chat/components/message_stream_builder.dart';
 import 'package:flash_chat/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import '../components/message.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -31,7 +29,8 @@ class _ChatScreenState extends State<ChatScreen> {
   late Stream<QuerySnapshot<Object?>>? stream = _firestore.collection(collectionPath).snapshots();
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController scrollController = ScrollController();
-  late bool initFlag = true;
+
+  late DateChip previousDate = DateChip(date: DateTime(2005));
 
   @override
   void initState() {
@@ -46,31 +45,14 @@ class _ChatScreenState extends State<ChatScreen> {
         loggedInUser = user;
       }
     } catch (e) {
-      //print('Error in ChatScreen.getCurrentUser(): $e');
+      print('Error in ChatScreen.getCurrentUser(): $e');
     }
-  }
-
-  void scrollToBottom() {
-    if (scrollController.hasClients) {
-      scrollController.animateTo(scrollController.position.maxScrollExtent + 100,
-          duration: const Duration(seconds: 1), curve: Curves.decelerate);
-    }
-  }
-
-  bool isSender(String email) {
-    bool result = false;
-
-    if (email == loggedInUser.email) {
-      result = true;
-    }
-
-    return result;
   }
 
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: null,
         actions: <Widget>[
@@ -104,94 +86,21 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            StreamBuilder<QuerySnapshot>(
+            MessageStreamBuilder(
               stream: stream,
-              builder: (context, snapshot) {
-                List<Message> messageList = [];
-                List<Widget> bubbleList = [];
-                late DateChip previousDate;
-
-                final messages = snapshot.data?.docs;
-
-                if (snapshot.data == null) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.lightBlueAccent,
-                    ),
-                  );
-                }
-
-                if (messages != null) {
-                  for (var message in messages) {
-                    final messageData = message.data() as Map;
-
-                    final Message m =
-                        Message(message: messageData[textField], sender: messageData[senderField], timeStamp: messageData[timeField]);
-                    m.dateTime = m.timeStamp.toDate();
-
-                    m.messageTimeStamp = DateFormat('yyyy-MM-dd kk:mm').format(m.dateTime);
-
-                    messageList.add(m);
-                  }
-                  messageList.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
-
-                  for (var m in messageList) {
-                    final bubbleWidget = BubbleNormal(
-                      text: m.message,
-                      isSender: isSender(m.sender),
-                      color: isSender(m.sender) ? Colors.green.shade600 : const Color(0xFF1B97F3),
-                      tail: true,
-                      textStyle: kSendButtonTextStyle,
-                    );
-
-                    final dateChip = DateChip(date: m.dateTime);
-                    if (initFlag) {
-                      print('Init flag in conditional: $initFlag');
-                      previousDate = dateChip;
-                      initFlag = false;
-                    }
-                    bubbleList.add(bubbleWidget);
-
-                    try {
-                      if (previousDate != null) {
-                        int index = previousDate.date.compareTo(dateChip.date);
-                        if (index >= 0) {
-                          bubbleList.add(dateChip);
-                        }
-                      }
-                    } catch (e) {
-                      print('\n\n\n------------$e------------\n\n\n');
-                      previousDate = dateChip;
-                    }
-                  }
-                }
-
-                scrollToBottom();
-
-                return Expanded(
-                  flex: 6,
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: bubbleList,
-                    ),
-                  ),
-                );
-              },
+              loggedInUser: loggedInUser,
+              scrollController: scrollController,
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 2.0),
               child: CustomMessageBar(
-                messageBarHintStyle: TextStyle(color: Colors.blueGrey),
+                messageBarHintStyle: kMessageBarHintStyleTextStyle,
                 onSend: (string) {
                   _firestore.collection(collectionPath).add({
                     textField: string,
                     senderField: loggedInUser.email,
                     timeField: Timestamp.now(),
                   });
-                  scrollToBottom();
-                  // textEditingController.clear();
                 },
                 actions: [
                   InkWell(

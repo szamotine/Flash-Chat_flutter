@@ -32,14 +32,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> validateLogin() async {
     try {
+      setSpinner();
       if (email.isNotEmpty && password.isNotEmpty) {
-        setSpinner();
         UserCredential userCred = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
         final String? userEmail = userCred.user?.email;
-        setSpinner();
+
         showLoginDialogue('$kLoginSuccessful : $userEmail');
       } else if (email.isEmpty) {
         showLoginDialogue('Please enter an email address');
@@ -48,6 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } on FirebaseAuthException catch (e) {
       showLoginDialogue('$kLoginUnsuccessful: \n Error: ${e.code} \n ${e.message}');
+    } finally {
+      setSpinner();
     }
   }
 

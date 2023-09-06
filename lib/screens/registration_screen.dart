@@ -38,24 +38,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Future<void> validateRegistration() async {
     try {
+      setSpinner();
       if (email.isNotEmpty && password.isNotEmpty) {
-        setSpinner();
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
         final String? userEmail = userCredential.user?.email;
         registrationValidated = true;
-        setSpinner();
+
         showLoginDialogue('$kRegistrationSuccessful : $userEmail');
       } else if (email.isEmpty) {
-        setSpinner();
         showLoginDialogue('Please enter an email address');
-        setSpinner();
       } else if (password.isEmpty) {
-        setSpinner();
         showLoginDialogue('Please enter a password');
-        setSpinner();
       }
     } on FirebaseAuthException catch (e) {
       showLoginDialogue('$kRegistrationUnsuccessful: \n Error: ${e.code} \n ${e.message}');
+    } finally {
+      setSpinner();
     }
   }
 

@@ -8,7 +8,11 @@ const String kLoginUnsuccessful = 'Login unsuccessful, try again';
 
 const String kRegistrationSuccessful = 'Registration Successful';
 const String kRegistrationUnsuccessful = 'Registration unsuccessful, try again';
+
+const String filler = '\n\n\n------------\n\n\n';
 //#endregion
+
+const kChatMessageDataTextStyle = TextStyle(fontSize: 12, color: Colors.grey);
 
 const kDrawerListTextStyle = TextStyle(
   color: Colors.white,
@@ -34,6 +38,10 @@ const kTextFieldInputTextStyle = TextStyle(
 
 const kTextFieldChatInputTextStyle = TextStyle(
   color: Colors.white,
+);
+
+const kMessageBarHintStyleTextStyle = TextStyle(
+  color: Colors.blueGrey,
 );
 
 const kMessageTextFieldDecoration = InputDecoration(
