@@ -30,11 +30,10 @@ class _ChatScreenState extends State<ChatScreen> {
   final _firestore = FirebaseFirestore.instance;
   late Stream<QuerySnapshot<Object?>>? stream = _firestore.collection(collectionPath).snapshots();
   final TextEditingController textEditingController = TextEditingController();
-  final ScrollController scrollController = ScrollController();
 
   late DateChip previousDate = DateChip(date: DateTime(2005));
 
-  //TODO: Implement Firebase Messaging
+  //TODO: Implement Firebase Messaging for Notifications
   // String messageTitle = "Empty";
   // String notificationAlert = "alert";
   //FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -43,11 +42,6 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
-
-    if (scrollController.hasClients) {
-      scrollController.animateTo(scrollController.position.maxScrollExtent + 100,
-          duration: const Duration(seconds: 1), curve: Curves.decelerate);
-    }
   }
 
   void getCurrentUser() {
@@ -57,7 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
         loggedInUser = user;
       }
     } catch (e) {
-      print('Error in ChatScreen.getCurrentUser(): $e');
+      // Empty on purpose for now
     }
   }
 
@@ -110,7 +104,6 @@ class _ChatScreenState extends State<ChatScreen> {
             MessageStreamBuilder(
               stream: stream,
               loggedInUser: loggedInUser,
-              scrollController: scrollController,
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 2.0),

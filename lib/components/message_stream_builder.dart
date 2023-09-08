@@ -3,12 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'constants.dart';
 import 'custom_message_bubble.dart';
 import 'message.dart';
 
 class MessageStreamBuilder extends StatelessWidget {
-  const MessageStreamBuilder({super.key, required this.stream, required this.loggedInUser, required this.scrollController});
+  const MessageStreamBuilder({super.key, required this.stream, required this.loggedInUser});
 
   final Stream<QuerySnapshot<Object?>>? stream;
   final String collectionPath = 'messages';
@@ -16,7 +15,7 @@ class MessageStreamBuilder extends StatelessWidget {
   final String textField = 'text';
   final String timeField = 'timeStamp';
   final User loggedInUser;
-  final ScrollController scrollController;
+  //final ScrollController scrollController;
 
   bool isSender(String email) {
     bool result = false;
@@ -24,16 +23,7 @@ class MessageStreamBuilder extends StatelessWidget {
     if (email == loggedInUser.email) {
       result = true;
     }
-
     return result;
-  }
-
-  void scrollToBottom() {
-    print('$filler Scrolling to bottom in message stream builder $filler');
-    if (scrollController.hasClients) {
-      scrollController.animateTo(scrollController.position.maxScrollExtent + 100,
-          duration: const Duration(seconds: 1), curve: Curves.decelerate);
-    }
   }
 
   @override
@@ -45,7 +35,6 @@ class MessageStreamBuilder extends StatelessWidget {
         List<Widget> customBubbleList = [];
 
         if (snapshot.hasData) {
-          // print('$filler snapshot has data');
           final messages = snapshot.data?.docs;
 
           if (messages != null) {
@@ -61,7 +50,6 @@ class MessageStreamBuilder extends StatelessWidget {
             messageList.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
 
             messageList = messageList.reversed.toList();
-            // print('$filler Message List completed with ${messageList.length} entries $filler');
 
             for (var m in messageList) {
               final customBubble = CustomMessageBubble(
@@ -74,24 +62,19 @@ class MessageStreamBuilder extends StatelessWidget {
               customBubbleList.add(customBubble);
             }
           }
-          scrollToBottom();
         } else {
-          print('$filler snapshot has no data $filler');
           return const Center(
             child: CircularProgressIndicator(
               backgroundColor: Colors.lightBlueAccent,
             ),
           );
         }
-
-        scrollToBottom();
         return Expanded(
           flex: 6,
           child: ListView(
             reverse: true,
             padding: const EdgeInsets.all(5),
             children: customBubbleList,
-            controller: scrollController,
           ),
         );
       },
