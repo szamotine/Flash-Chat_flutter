@@ -110,11 +110,13 @@ class _ChatScreenState extends State<ChatScreen> {
               child: CustomMessageBar(
                 messageBarHintStyle: kMessageBarHintStyleTextStyle,
                 onSend: (string) {
-                  _firestore.collection(collectionPath).add({
+                  var data = {
                     textField: string,
                     senderField: loggedInUser.email,
                     timeField: Timestamp.now(),
-                  });
+                  };
+
+                  _firestore.collection(collectionPath).add(data);
                 },
                 actions: [
                   InkWell(
